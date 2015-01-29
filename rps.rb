@@ -35,13 +35,10 @@ end
 
 def play_game
   
-  puts "How many rounds?"
-  rounds = gets.chomp.to_i
+  rounds = get_rounds
   
-  puts "Enter first player's name:"
-  player1 = Player.new(gets.chomp)
-  puts "Enter second player's name:"
-  player2 = Player.new(gets.chomp)
+  player1 = make_player
+  player2 = make_player
   
   rnd = 0
   
@@ -50,30 +47,9 @@ def play_game
     play1 = player1.get_move
     play2 = player2.get_move
   
-
-    game_val = 0
-
-    if play1 == play2
-      game_val = 0
-    else
-      if play1 == "rock"
-        play2 == "scissors" ? game_val += 1 : game_val -= 1
-      elsif play1 == "paper"
-        play2 == "rock" ? game_val += 1 : game_val -= 1
-      else
-        play2 == "paper" ? game_val += 1 : game_val -= 1
-      end
-    end
-    # declare winner:
-    if game_val == 1
-      puts "#{player1.name} wins!"
-      player1.won_round
-    elsif game_val == -1
-      puts "#{player2.name} wins!"
-      player2.won_round
-    else
-      puts "It's a tie!"
-    end
+    game_val = determine_winner(play1, play2)
+    
+    declare_round_winner(game_val,player1,player2)
     
     rnd += 1
   end
@@ -95,6 +71,45 @@ def play_game
   end
   
 end
+
+def get_rounds
+  puts "How many rounds?"
+  gets.chomp.to_i
+end
+
+def make_player
+  puts "Enter player name:"
+  Player.new(gets.chomp)
+end
+
+def determine_winner(play1, play2)
+  game_val = 0
+  if play1 == play2
+    game_val = 0
+  else
+    if play1 == "rock"
+      play2 == "scissors" ? game_val += 1 : game_val -= 1
+    elsif play1 == "paper"
+      play2 == "rock" ? game_val += 1 : game_val -= 1
+    else
+      play2 == "paper" ? game_val += 1 : game_val -= 1
+    end
+  end
+  game_val
+end
+
+def declare_round_winner(game_val,player1,player2)
+  if game_val == 1
+    puts "#{player1.name} wins!"
+    player1.won_round
+  elsif game_val == -1
+    puts "#{player2.name} wins!"
+    player2.won_round
+  else
+    puts "It's a tie!"
+  end
+end
+  
 
 binding.pry
 
