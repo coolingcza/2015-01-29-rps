@@ -3,8 +3,7 @@ require "pry"
 "Rock, Paper, Scissors!"
 
 class Player
-  attr_reader :name
-  attr_reader :score
+  attr_reader :name, :score, :move
   
   def initialize(name)
     @name = name
@@ -40,35 +39,17 @@ def play_game
   player1 = make_player
   player2 = make_player
   
-  rnd = 0
+  play_rounds(rounds, player1, player2)
   
-  until rnd > rounds-1 do
+  display_game_winner(player1,player2) if rounds > 1
   
-    play1 = player1.get_move
-    play2 = player2.get_move
-  
-    game_val = determine_winner(play1, play2)
-    
-    declare_round_winner(game_val,player1,player2)
-    
-    rnd += 1
-  end
-  
-  if rounds > 1
-  
-    puts "#{player1.name}'s score: #{player1.score}"
-    puts "#{player2.name}'s score: #{player2.score}"
-  
-    if player1.score > player2.score
-      puts "#{player1.name} is the winner!"
-    elsif player1.score < player2.score
-      puts "#{player2.name} is the winner!"
-    else
-      puts "It's a tie."
-    end
-    
-  else
-  end
+  # if rounds > 1
+  #
+  #   display_player_scores(player1,player2)
+  #   determine_game_winner(player1,player2)
+  #
+  # else
+  # end
   
 end
 
@@ -82,7 +63,7 @@ def make_player
   Player.new(gets.chomp)
 end
 
-def determine_winner(play1, play2)
+def determine_round_winner(play1, play2)
   game_val = 0
   if play1 == play2
     game_val = 0
@@ -108,6 +89,42 @@ def declare_round_winner(game_val,player1,player2)
   else
     puts "It's a tie!"
   end
+end
+
+def play_rounds(rounds,player1,player2)
+  rnd = 0
+  
+  until rnd > rounds-1 do
+  
+    play1 = player1.get_move
+    play2 = player2.get_move
+  
+    game_val = determine_round_winner(play1, play2)
+    
+    declare_round_winner(game_val,player1,player2)
+    
+    rnd += 1
+  end
+end
+
+def determine_game_winner(player1,player2)
+  if player1.score > player2.score
+    puts "#{player1.name} is the winner!"
+  elsif player1.score < player2.score
+    puts "#{player2.name} is the winner!"
+  else
+    puts "It's a tie."
+  end
+end
+
+def display_player_scores(player1,player2)
+  puts "#{player1.name}'s score: #{player1.score}"
+  puts "#{player2.name}'s score: #{player2.score}"
+end
+
+def display_game_winner(player1,player2)
+  display_player_scores(player1,player2)
+  determine_game_winner(player1,player2)
 end
   
 
