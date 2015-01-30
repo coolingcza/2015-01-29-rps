@@ -84,6 +84,18 @@ class Player
     
 end
 
+# Class: Game
+#
+# Models a Rock, Paper, Scissors game.
+#
+# Attributes:
+# @rules  - Hash: contains available moves as keys and m.
+# @rounds - Integer: initialized at zero, increases as rounds are won.
+#
+# Public Methods:
+# #get_rounds
+# #print_rules
+
 class Game
   attr_reader :rules, :rounds
   
@@ -113,6 +125,18 @@ class Game
     @rounds = gets.chomp.to_i
   end
   
+  # Public: #print_rules
+  # Displays rules to user.
+  #
+  # Parameters:
+  # None
+  #
+  # Returns:
+  # Prints rules to command line interface.
+  #
+  # State Changes:
+  # None
+  
   def print_rules
     puts "Each of two players chooses a move from among"
     @rules.each { |k, v| puts k.capitalize }
@@ -135,6 +159,18 @@ def play_game
   display_game_winner(player1,player2) if game.rounds > 1
   
 end
+
+# Public: #game_setup
+# Instantiates a Game object.
+#
+# Parameters:
+# None
+#
+# Returns:
+# Game object.
+#
+# State Changes:
+# None.
 
 def game_setup
   game = Game.new
@@ -161,37 +197,42 @@ def make_player(rules)
 end
 
 # Public: #determine_round_winner
-# 
+# Compares player moves to rules and determines winner.
 #
 # Parameters:
-# 
+# play1 - Player 1's move
+# play2 - Player 2's move
+# rules - rule hash from Game object
 #
 # Returns:
-# 
+# game_val - Number: 0, 1, or -1 depending on round outcome.
 #
 # State Changes:
-# 
+# game_val
 
 def determine_round_winner(play1, play2, rules)
-  puts rules
-  puts play1
-  puts rules[play1.to_sym]
-  puts play2
-  puts rules[play2.to_sym]
   game_val = 0
   if play1 == play2
     game_val = 0
   else
     play2 == rules[play1.to_sym] ? game_val += 1 : game_val -= 1
-    #   play2 == "scissors" ? game_val += 1 : game_val -= 1
-    # elsif play1 == "paper"
-    #   play2 == "rock" ? game_val += 1 : game_val -= 1
-    # else
-    #   play2 == "paper" ? game_val += 1 : game_val -= 1
-    # end
   end
   game_val
 end
+
+# Public: #declare_round_winner
+# Prints winner to inteface and calls winner's #won_round.
+#
+# Parameters:
+# game_val - returned from #determine_round_winner
+# player1  - Player 1 object
+# player2  - Player 2 object
+#
+# Returns:
+# Outputs winning player's name.
+#
+# State Changes:
+# None.
 
 def declare_round_winner(game_val,player1,player2)
   if game_val == 1
@@ -204,6 +245,21 @@ def declare_round_winner(game_val,player1,player2)
     puts "It's a tie!"
   end
 end
+
+# Public: #play_rounds
+# Plays number of rounds stored in Game object.
+#
+# Parameters:
+# rounds  - Number: from Game object
+# player1 - Player 1 object
+# player2 - Player 2 object
+# rules   - Hash: from Game object
+#
+# Returns:
+# None.
+#
+# State Changes:
+# None.
 
 def play_rounds(rounds,player1,player2,rules)
   rnd = 0
@@ -221,6 +277,19 @@ def play_rounds(rounds,player1,player2,rules)
   end
 end
 
+# Public: #determine_game_winner
+# Determines and displays overall winner by comparing player scores.
+#
+# Parameters:
+# player1 - Player 1 object
+# player2 - Player 2 object
+#
+# Returns:
+# Prints winner name to interface.
+#
+# State Changes:
+# None.
+
 def determine_game_winner(player1,player2)
   if player1.score > player2.score
     puts "#{player1.name} is the winner!"
@@ -231,10 +300,36 @@ def determine_game_winner(player1,player2)
   end
 end
 
+# Public: #display_player_scores
+# Displays player scores.
+#
+# Parameters:
+# player1 - Player 1 object
+# player2 - Player 2 object
+#
+# Returns:
+# Prints player scores to interface.
+#
+# State Changes:
+# None.
+
 def display_player_scores(player1,player2)
   puts "#{player1.name}'s score: #{player1.score}"
   puts "#{player2.name}'s score: #{player2.score}"
 end
+
+# Public: #display_game_winner
+# Displays game result.
+#
+# Parameters:
+# player1 - Player 1 object
+# player2 - Player 2 object
+#
+# Returns:
+# None.
+#
+# State Changes:
+# None.
 
 def display_game_winner(player1,player2)
   display_player_scores(player1,player2)
