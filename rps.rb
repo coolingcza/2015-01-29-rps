@@ -2,6 +2,8 @@ require "pry"
 
 #Rock, Paper, Scissors!
 
+#require_relative "player_class"
+
 # Class: Player
 #
 # Models a player for Rock, Paper, Scissors.
@@ -18,16 +20,14 @@ require "pry"
 # #won_round
 
 class Player
-  attr_reader :name, :score, :move
-  
-  def initialize(name,rules)
+  attr_reader :name, :score, :move, #:valid_entries-->uncomment for testing
+
+  def initialize(name,moves)
     @name = name
-    @rules = rules
-    @valid_entries = []
+    @valid_entries = moves
     @score = 0
-    rules.keys.each { |a| @valid_entries << a.to_s }
   end
-  
+
   # Public: #get_move
   # Gets player's move and checks validity.
   #
@@ -39,7 +39,7 @@ class Player
   #
   # State Changes:
   # Assigns @move.
-  
+
   def get_move
     puts "#{@name}, enter your move:"
     @move = gets.chomp.downcase
@@ -49,7 +49,7 @@ class Player
     end
     @move
   end
-  
+
   # Public: #check_move
   # Checks validity of @move entered in #get_move.
   #
@@ -61,11 +61,11 @@ class Player
   #
   # State Changes:
   # none.
-  
+
   def check_move(move)
     @valid_entries.include? move
   end
-  
+
   # Public: #won_round
   # Increases player score by one.
   #
@@ -77,11 +77,11 @@ class Player
   #
   # State Changes:
   # @score value increased by one.
-  
+
   def won_round
     @score += 1
   end
-    
+
 end
 
 # Class: Game
@@ -97,7 +97,7 @@ end
 # #print_rules
 
 class Game
-  attr_reader :rules, :rounds
+  attr_reader :rules, :rounds, :moves
   
   def initialize
     @rules = {
@@ -106,6 +106,7 @@ class Game
       "paper": "rock"
     }
     @rounds = 0
+    @moves = []
   end
   
   # Public: #get_rounds
@@ -145,14 +146,18 @@ class Game
     puts " "
   end
   
+  def get_valid_moves
+    @rules.each { |k,v| @moves << k.to_s }
+  end
+  
 end
 
 def play_game
   
   game = game_setup
   
-  player1 = make_player(game.rules)
-  player2 = make_player(game.rules)
+  player1 = make_player(game.moves)
+  player2 = make_player(game.moves)
   
   play_rounds(game.rounds, player1, player2, game.rules)
   
@@ -176,6 +181,7 @@ def game_setup
   game = Game.new
   game.get_rounds
   game.print_rules
+  game.get_valid_moves
   game
 end
 
@@ -191,9 +197,9 @@ end
 # State Changes:
 # None
 
-def make_player(rules)
+def make_player(moves)
   puts "Enter player name:"
-  Player.new(gets.chomp, rules)
+  Player.new(gets.chomp, moves)
 end
 
 # Public: #determine_round_winner

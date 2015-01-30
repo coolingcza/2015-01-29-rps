@@ -7,7 +7,6 @@
 # @score         - Integer: initialized at zero, increases as rounds are won.
 # @move          - String: "rock","paper", or "scissors".
 # @valid_entries - Array: contains strings of valid moves.
-# @rules         - Hash: from Game object.
 #
 # Public Methods:
 # #get_move
@@ -15,14 +14,12 @@
 # #won_round
 
 class Player
-  attr_reader :name, :score, :move
+  attr_reader :name, :score, :move, #:valid_entries-->uncomment for testing
   
-  def initialize(name,rules)
+  def initialize(name,moves)
     @name = name
-    @rules = rules
-    @valid_entries = []
+    @valid_entries = moves
     @score = 0
-    rules.keys.each { |a| @valid_entries << a.to_s }
   end
   
   # Public: #get_move
