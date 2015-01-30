@@ -29,7 +29,6 @@ class Player
     @score += 1
   end
     
-
 end
 
 def play_game
@@ -42,14 +41,6 @@ def play_game
   play_rounds(rounds, player1, player2)
   
   display_game_winner(player1,player2) if rounds > 1
-  
-  # if rounds > 1
-  #
-  #   display_player_scores(player1,player2)
-  #   determine_game_winner(player1,player2)
-  #
-  # else
-  # end
   
 end
 
@@ -129,4 +120,3 @@ end
   
 
 binding.pry
-
