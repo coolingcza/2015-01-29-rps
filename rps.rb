@@ -22,7 +22,7 @@ require "pry"
 class Player
   attr_reader :name, :score, :move, #:valid_entries-->uncomment for testing
 
-  def initialize(name,moves)
+  def initialize(name, moves)
     @name = name
     @valid_entries = moves
     @score = 0
