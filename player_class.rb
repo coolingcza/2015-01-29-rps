@@ -14,7 +14,7 @@
 # #won_round
 
 class Player
-  attr_reader :name, :score, :move, #:valid_entries-->uncomment for testing
+  attr_reader :name, :score, :move #, :valid_entries-->uncomment for testing
   
   def initialize(name,moves)
     @name = name
