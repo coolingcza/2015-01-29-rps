@@ -39,12 +39,3 @@ class RPSTest < Minitest::Test
     
   
 end
-
-# class EventTest < Minitest::Test
-#
-#   def test_event
-#     party = Event.new(["Bill","Charlie"],"Destination",35.4)
-#     assert_kind_of Array, party.attendees
-#   end
-#
-# end
