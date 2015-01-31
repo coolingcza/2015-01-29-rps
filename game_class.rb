@@ -1,3 +1,5 @@
+require_relative "rules_class"
+
 # Class: Game
 #
 # Models a Rock, Paper, Scissors game.
@@ -5,22 +7,21 @@
 # Attributes:
 # @rules  - Hash: contains available moves as keys and m.
 # @rounds - Integer: initialized at zero, increases as rounds are won.
+# @moves  - Array: contains strings of valid moves derived from @rules.
 #
 # Public Methods:
 # #get_rounds
 # #print_rules
+# #get_valid_moves
+# #determine_round_winner
+# #declare_round_winner
+# #play_rounds
 
 class Game
-  attr_reader :rules, :rounds, :moves
+  attr_reader :rounds, :moves, :rules
   
-  def initialize
-    @rules = {
-      "rock": "scissors",
-      "scissors": "paper",
-      "paper": "rock"
-    }
-    @rounds = 0
-    @moves = []
+  def initialize(game_num)
+    @game_n = game_num
   end
   
   # Public: #start
@@ -37,8 +38,11 @@ class Game
 
   def start
     get_rounds
-    print_rules
-    get_valid_moves
+    #print_rules
+    #get_valid_moves
+    @rules = Rules.new(@game_n)
+    @rules.print_rules
+    @moves = @rules.get_valid_moves
   end
   
   # Public: #get_rounds
@@ -56,71 +60,6 @@ class Game
   def get_rounds
     puts "How many rounds?"
     @rounds = gets.chomp.to_i
-  end
-  
-  # Public: #print_rules
-  # Displays rules to user.
-  #
-  # Parameters:
-  # None
-  #
-  # Returns:
-  # Prints rules to command line interface.
-  #
-  # State Changes:
-  # None
-  
-  def print_rules
-    puts "Each of two players chooses a move from among"
-    @rules.each { |k, v| puts k.capitalize }
-    puts " "
-    @rules.each { |k, v| puts "#{k.capitalize} beats #{v}" }
-    puts " "
-  end
-  
-  def get_valid_moves
-    @rules.each { |k,v| @moves << k.to_s }
-  end
-  
-  # Public: #make_player
-  # Creates an instance of the Player class.
-  #
-  # Parameters:
-  # Acquires instance name from user.
-  #
-  # Returns:
-  # Player instance
-  #
-  # State Changes:
-  # None
-
-  def make_player
-    puts "Enter player name:"
-    Player.new(gets.chomp, @moves)
-  end
-
-  # Public: #determine_round_winner
-  # Compares player moves to rules and determines winner.
-  #
-  # Parameters:
-  # play1 - Player 1's move
-  # play2 - Player 2's move
-  # rules - rule hash from Game object
-  #
-  # Returns:
-  # game_val - Number: 0, 1, or -1 depending on round outcome.
-  #
-  # State Changes:
-  # game_val
-
-  def determine_round_winner(play1, play2)
-    game_val = 0
-    if play1 == play2
-      game_val = 0
-    else
-      play2 == @rules[play1.to_sym] ? game_val += 1 : game_val -= 1
-    end
-    game_val
   end
 
   # Public: #declare_round_winner
@@ -164,7 +103,7 @@ class Game
   # State Changes:
   # None.
 
-  def play_rounds(player1,player2)
+  def play_rounds(player1,player2,rules)
     rnd = 0
   
     until rnd > @rounds-1 do
@@ -172,7 +111,7 @@ class Game
       play1 = player1.get_move
       play2 = player2.get_move
   
-      game_val = determine_round_winner(play1, play2)
+      game_val = rules.determine_round_winner(play1, play2)
     
       declare_round_winner(game_val,player1,player2)
     

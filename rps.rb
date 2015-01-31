@@ -8,99 +8,40 @@ require_relative "game_class"
 
 def play_game
   
-  game = Game.new()
+  puts "Which game would you like to play?"
+  puts "1. Rock, Paper, Scissors"
+  puts "2. Rock, Paper, Scissors, Lizard, Spock"
+  puts "Enter game number:"
+  game_num = gets.chomp.to_i
+  
+  game = Game.new(game_num)
   game.start
   
-  player1 = game.make_player
-  player2 = game.make_player
+  player1 = make_player(game.moves)
+  player2 = make_player(game.moves)
   
-  game.play_rounds(player1, player2)
+  game.play_rounds(player1, player2, game.rules)
   
   display_game_winner(player1,player2) if game.rounds > 1
   
 end
 
+# Public: #make_player
+# Creates an instance of the Player class.
+#
+# Parameters:
+# Acquires instance name from user.
+#
+# Returns:
+# Player instance
+#
+# State Changes:
+# None
 
-# # Public: #determine_round_winner
-# # Compares player moves to rules and determines winner.
-# #
-# # Parameters:
-# # play1 - Player 1's move
-# # play2 - Player 2's move
-# # rules - rule hash from Game object
-# #
-# # Returns:
-# # game_val - Number: 0, 1, or -1 depending on round outcome.
-# #
-# # State Changes:
-# # game_val
-#
-# def determine_round_winner(play1, play2, rules)
-#   game_val = 0
-#   if play1 == play2
-#     game_val = 0
-#   else
-#     play2 == rules[play1.to_sym] ? game_val += 1 : game_val -= 1
-#   end
-#   game_val
-# end
-#
-# # Public: #declare_round_winner
-# # Prints winner to inteface and calls winner's #won_round.
-# #
-# # Parameters:
-# # game_val - returned from #determine_round_winner
-# # player1  - Player 1 object
-# # player2  - Player 2 object
-# #
-# # Returns:
-# # Outputs winning player's name.
-# #
-# # State Changes:
-# # None.
-#
-# def declare_round_winner(game_val,player1,player2)
-#   if game_val == 1
-#     puts "#{player1.name} wins!"
-#     player1.won_round
-#   elsif game_val == -1
-#     puts "#{player2.name} wins!"
-#     player2.won_round
-#   else
-#     puts "It's a tie!"
-#   end
-# end
-#
-# # Public: #play_rounds
-# # Plays number of rounds stored in Game object.
-# #
-# # Parameters:
-# # rounds  - Number: from Game object
-# # player1 - Player 1 object
-# # player2 - Player 2 object
-# # rules   - Hash: from Game object
-# #
-# # Returns:
-# # None.
-# #
-# # State Changes:
-# # None.
-#
-# def play_rounds(rounds,player1,player2,rules)
-#   rnd = 0
-#
-#   until rnd > rounds-1 do
-#
-#     play1 = player1.get_move
-#     play2 = player2.get_move
-#
-#     game_val = determine_round_winner(play1, play2, rules)
-#
-#     declare_round_winner(game_val,player1,player2)
-#
-#     rnd += 1
-#   end
-# end
+def make_player(moves)
+  puts "Enter player name:"
+  Player.new(gets.chomp, moves)
+end
 
 # Public: #determine_game_winner
 # Determines and displays overall winner by comparing player scores.
